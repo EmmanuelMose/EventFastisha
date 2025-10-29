@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import * as bookingService from "./booking.service";
+import * as bookingService from "../bookings/booking.service";
 import * as eventService from "../events/event.service";
 
 // get all bookings
