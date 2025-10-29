@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import * as salesService from "./sales.service";
-import * as bookingsService from "./bookings.service";
+import * as salesService from "../analytics/sales.service";
+import * as bookingsService from "../analytics/bookings.service";
 
 export const getSalesReport = async (_req: Request, res: Response) => {
     try {
