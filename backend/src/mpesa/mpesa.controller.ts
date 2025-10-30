@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import axios from "axios";
-import { getAccessToken } from "./mpesa.service";
+import { getAccessToken } from "../mpesa/mpesa.service";
 
 export const initiateSTKPush = async (req: Request, res: Response) => {
   const { phone, amount} = req.body;
