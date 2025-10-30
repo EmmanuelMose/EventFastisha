@@ -13,6 +13,15 @@ async function seed() {
   try {
     console.log("Starting database seeding...");
 
+
+      //Clear existing records first
+    await db.delete(PaymentsTable);
+    await db.delete(BookingsTable);
+    await db.delete(EventsTable);
+    await db.delete(VenuesTable);
+    await db.delete(CustomerSupportTicketsTable);
+    await db.delete(UsersTable);
+
     //users
     const users = await db
       .insert(UsersTable)
@@ -88,16 +97,19 @@ async function seed() {
           name: "Mombasa Sports Club",
           address: "Mombasa Town",
           capacity: 10000,
+          contactNumber: "+254700222333",
         },
         {
           name: "Nakuru Showground",
           address: "Nakuru City",
           capacity: 15000,
+          contactNumber: "+254700222333",
         },
         {
           name: "Eldoret Stadium",
           address: "Eldoret Town",
           capacity: 12000,
+          contactNumber: "+254700222333",
         },
       ])
       .returning({ venueID: VenuesTable.venueID });
@@ -211,7 +223,7 @@ async function seed() {
       ])
       .returning({ bookingID: BookingsTable.bookingID });
 
-    console.log("✅ Bookings inserted.");
+    console.log("Bookings inserted.");
 
     //payments
     await db.insert(PaymentsTable).values([
@@ -252,7 +264,7 @@ async function seed() {
       },
     ]);
 
-    console.log("✅ Payments inserted.");
+    console.log("Payments inserted.");
 
    //customer support ticket
     await db.insert(CustomerSupportTicketsTable).values([
