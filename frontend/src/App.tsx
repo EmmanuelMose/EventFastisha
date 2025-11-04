@@ -1,5 +1,4 @@
 import { createBrowserRouter, RouterProvider } from 'react-router'
-import './App.css'
 import Error from './components/error/Error'
 import AboutPage from './pages/AboutPage'
 import LandingPage from './pages/LandingPage'
@@ -18,13 +17,13 @@ import Payments from './pages/dashboard/AdminDashboard/payments/Payments'
 import Users from './pages/dashboard/AdminDashboard/manageUsers/Users'
 import CustomerSupport from './pages/dashboard/AdminDashboard/customerSupport/CustomerSupport'
 import AdminProfile from './pages/dashboard/AdminDashboard/profile/AdminProfile'
-import Analytics from './pages/dashboard/AdminDashboard/analytics/Analytics'
+import Analytics from './pages/dashboard/AdminDashboard/analytics/analytics'
 import UserEvents from './pages/dashboard/UserDashboard/events/UserEvents'
 import UserProfile from './pages/dashboard/UserDashboard/profile/UserProfile'
 import UserCustomerSupport from './pages/dashboard/UserDashboard/customerSupport/UserCustomerSupport'
 import Receipt from './pages/dashboard/UserDashboard/payments/Receipt'
 import PaymentHistory from './pages/dashboard/UserDashboard/payments/PaymentHistory'
-import PaymentsPage from './pages/dashboard/UserDashboard/payments/PaymentsPage'
+import PaymentsPage from './pages/dashboard/UserDashboard/payments/PaymentPage'
 
 function App() {
    const isAdmin = useSelector((state: RootState) => state.user.user?.role === 'admin');

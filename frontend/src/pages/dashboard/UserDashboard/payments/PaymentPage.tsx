@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useState } from "react";
 import LipaMpesaModal from "./LipaMpesaModal";
 import type { RootState } from "../../../../app/store";
-import { bookingsAPI } from "../../../../Features/booking/bookingsAPI";
+import { bookingsAPI } from "../../../../Features/booking/bookingAPI";
 
 const PaymentsPage = () => {
   const { bookingID } = useParams();

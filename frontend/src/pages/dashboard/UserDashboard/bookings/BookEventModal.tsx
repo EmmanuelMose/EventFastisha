@@ -1,7 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { type RootState } from "../../../../app/store";
-import { bookingsAPI } from "../../../../Features/booking/bookingsAPI";
+import { bookingsAPI } from "../../../../Features/booking/bookingAPI";
 import { toast } from "sonner";
 import { type TEvent } from "../../../../Features/events/eventsAPI";
 import { useNavigate } from "react-router";
