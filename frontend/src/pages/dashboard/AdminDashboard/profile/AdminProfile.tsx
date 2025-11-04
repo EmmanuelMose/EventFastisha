@@ -1,8 +1,8 @@
 import { type RootState } from "../../../../app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { userAPI } from "../../../../Features/users/usersAPI";
+import { userAPI } from "../../../../Features/users/usersApi";
 import { useNavigate } from "react-router";
-import { logout } from "../../../../Features/login/userSlice";
+import { logout } from "../../../../Features/login/userSlicer";
 import UpdateProfile from "./UpdateProfile";
 import { FaSignOutAlt, FaUserEdit } from "react-icons/fa";
 
