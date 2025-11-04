@@ -1,4 +1,4 @@
-import { bookingsAPI } from "../../../../Features/booking/bookingsAPI";
+import { bookingsAPI } from "../../../../Features/booking/bookingAPI";
 
 const Bookings = () => {
   const { data: bookingsData, isLoading, error } = bookingsAPI.useGetBookingsQuery(undefined, {
