@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from 'react-router';
 import { loginAPI } from '../../Features/login/loginAPI';
 import { toast } from 'sonner';
 import { useDispatch } from 'react-redux';
-import { loginSuccess } from '../../Features/login/userSlice';
+import { loginSuccess } from '../../Features/login/userSlicer';
 
 type LoginInputs = {
     email: string;
