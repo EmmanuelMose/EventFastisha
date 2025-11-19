@@ -1,4 +1,4 @@
-import CustomerSupportForm from "../../../../components/customer_support/CustomerSupport";
+import CustomerSupportForm from "../../../../components/customer_support/CustomerSupportForm";
 import TicketHistory from "../../../../components/customer_support/TicketHistory";
 
 const UserCustomerSupport = () => {
