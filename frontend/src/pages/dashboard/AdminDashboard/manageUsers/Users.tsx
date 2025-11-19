@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { userAPI, type TUser } from "../../../../Features/users/usersApi";
+import { userAPI, type TUser } from "../../../../Features/users/usersAPI";
 import ChangeRole from "./ChangeRole";
 
 const Users = () => {
