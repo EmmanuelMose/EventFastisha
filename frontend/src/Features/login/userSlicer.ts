@@ -1,40 +1,46 @@
- import { createSlice } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
+// Define the user structure
+export type User = {
+  userID: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  contactPhone: string;
+  address: string;
+  role: string;
+  image_url: string;
+};
 
+// User state
 export type UserState = {
-    token: string | null;
-    user: {
-        userID: number;
-        firstName: string;
-        lastName: string;
-        email: string;
-        contactPhone: string;
-        address: string;
-        role: string;
-        image_url: string;
+  token: string | null;
+  user: User | null;
+};
 
-    } | null;
-} // how the user state will look like in the store
-
+// Initial state
 const initialState: UserState = {
-    token: null,
-    user: null,
-} //By default, there is no token and no user (not logged in).
+  token: null,
+  user: null,
+};
 
-const userSlice = createSlice({ // createSlice is a function that creates a slice of the Redux store- a slice in simple terms is a part of the store that contains a specific piece of state and the reducers that update that state.
-    name: 'user', // name of the slice, this will be used as a key in the store
-    initialState, // initial state of the slice
-    reducers: { //a reducer is a function that takes the current state and an action, and returns a new state
-        loginSuccess: (state, action) => {
-            state.token = action.payload.token; // the token is set when the user logs in successfully
-            state.user = action.payload.user; // the user is set when the user logs in successfully
-        },
-        logout: (state) => {
-            state.token = null;
-            state.user = null;
-        }
-    }
-})
+// Create slice
+const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {
+    loginSuccess: (state, action: PayloadAction<UserState>) => {
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+    },
+    logout: (state) => {
+      state.token = null;
+      state.user = null;
+    },
+  },
+});
 
-export const { loginSuccess, logout } = userSlice.actions; // export the actions so that they can be dispatched from components
+// Export actions and reducer
+export const { loginSuccess, logout } = userSlice.actions;
 export default userSlice.reducer;
