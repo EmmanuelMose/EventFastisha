@@ -1,7 +1,7 @@
 import { persistReducer, persistStore } from 'redux-persist';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 //import type { UserState } from "../Features/login/userSlicer";
-import { userAPI } from '../Features/users/usersApi';
+import { userAPI } from '../Features/users/usersAPI';
 import storage from 'redux-persist/lib/storage';
 import { loginAPI } from '../Features/login/loginAPI';
 import userSlice from '../Features/login/userSlicer';
