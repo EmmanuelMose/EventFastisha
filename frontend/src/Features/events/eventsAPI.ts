@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ApiDomain } from "../../utils/APIDomain";
 import type { RootState } from "../../app/store";
 
-
 export type TEvent = {
     eventID: number;
     title: string;
@@ -19,22 +18,24 @@ export type TEvent = {
     venueID: number;
     createdAt: string;
     updatedAt: string;
-}
+};
 
 export const eventsAPI = createApi({
     reducerPath: 'eventsAPI',
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token; // get the token from the user slice of the state
+            // fix for Vercel TS build
+            const state = getState() as RootState & { user?: { token?: string } };
+            const token = state.user?.token;
+
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`); // set the Authorization header with the token
+                headers.set('Authorization', `Bearer ${token}`);
             }
-            headers.set('Content-Type', 'application/json'); // set the Content-Type header to application/json
-            return headers; // return the headers to be used in the request
+            headers.set('Content-Type', 'application/json');
+            return headers;
         }
     }),
-
     tagTypes: ['Events'],
     endpoints: (builder) => ({
         createEvent: builder.mutation<TEvent, Partial<TEvent>>({
@@ -43,31 +44,38 @@ export const eventsAPI = createApi({
                 method: 'POST',
                 body: newEvent
             }),
-            invalidatesTags: ['Events'] // invalidates the cache for the Events tag when a new event is created
+            invalidatesTags: ['Events']
         }),
-        getEvents: builder.query<{ data: TEvent[] }, void>({ //void means no parameters are needed to fetch the events
+        getEvents: builder.query<{ data: TEvent[] }, void>({
             query: () => '/api/events',
-            providesTags: ['Events'] // this tells RTK Query that this endpoint provides the Events tag, so it can be used to invalidate the cache when a new event is created
+            providesTags: ['Events']
         }),
-        updateEvent: builder.mutation<TEvent, Partial<TEvent> & { eventID: number }>({ //& { id: number } is used to ensure that the id is always present when updating a event
+        updateEvent: builder.mutation<TEvent, Partial<TEvent> & { eventID: number }>({
             query: (updatedEvent) => ({
                 url: `/api/event/${updatedEvent.eventID}`,
                 method: 'PUT',
                 body: updatedEvent
             }),
-            invalidatesTags: ['Events'] // invalidates the cache for the Events tag when a event is updated
+            invalidatesTags: ['Events']
         }),
-        deleteEvent: builder.mutation<{ success: boolean, eventID: number }, number>({ //success: boolean indicates whether the deletion was successful, id: number is the id of the event that was deleted, number is the type of the id parameter
+        deleteEvent: builder.mutation<{ success: boolean; eventID: number }, number>({
             query: (eventID) => ({
                 url: `/api/event/${eventID}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: ['Events'] // invalidates the cache for the Events tag when a event is deleted
+            invalidatesTags: ['Events']
         }),
-        // get event by id
         getEventById: builder.query<{ data: TEvent[] }, number>({
             query: (eventID) => `/api/event/${eventID}`,
-            providesTags: ['Events'] // this tells RTK Query that this endpoint provides the Events tag, so it can be used to invalidate the cache when a new event is created
+            providesTags: ['Events']
         }),
     })
-})
+});
+
+export const {
+    useCreateEventMutation,
+    useGetEventsQuery,
+    useUpdateEventMutation,
+    useDeleteEventMutation,
+    useGetEventByIdQuery
+} = eventsAPI;
