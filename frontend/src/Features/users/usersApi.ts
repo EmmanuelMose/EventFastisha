@@ -18,65 +18,85 @@ export type TUser = {
 };
 
 export const userAPI = createApi({
-    reducerPath: 'userAPI',
+    reducerPath: "userAPI",
+
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            // Fix for TS errors on Vercel with persisted state
-            const state = getState() as RootState & { user?: { token?: string } };
-            const token = state.user?.token;
-
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
-            }
-
-            headers.set('Content-Type', 'application/json');
+            const token = (getState() as RootState).user.token;
+            if (token) headers.set("Authorization", `Bearer ${token}`);
+            headers.set("Content-Type", "application/json");
             return headers;
-        }
+        },
     }),
-    tagTypes: ['Users'],
+
+    tagTypes: ["Users"],
+
     endpoints: (builder) => ({
+        // ------------------------------
+        // CREATE USER (REGISTER)
+        // ------------------------------
         createUser: builder.mutation<TUser, Partial<TUser>>({
             query: (newUser) => ({
-                url: '/api/user',
-                method: 'POST',
-                body: newUser
+                url: "/api/user",
+                method: "POST",
+                body: newUser,
             }),
-            invalidatesTags: ['Users']
+            invalidatesTags: ["Users"],
         }),
+
+        // ------------------------------
+        // VERIFY USER (CODE VERIFICATION)
+        // ------------------------------
         verifyUser: builder.mutation<{ message: string }, { email: string; code: string }>({
             query: (data) => ({
-                url: '/api/user/verify',
-                method: 'POST',
+                url: "/api/user/verify",
+                method: "POST",
                 body: data,
             }),
         }),
+
+        // ------------------------------
+        // GET ALL USERS
+        // ------------------------------
         getUsers: builder.query<TUser[], void>({
-            query: () => '/api/users',
+            query: () => "/api/users",
             transformResponse: (response: { data: TUser[] }) => response.data,
-            providesTags: ['Users']
+            providesTags: ["Users"],
         }),
+
+        // ------------------------------
+        // UPDATE USER
+        // ------------------------------
         updateUser: builder.mutation<TUser, Partial<TUser> & { userID: number }>({
             query: (user) => ({
                 url: `/api/user/${user.userID}`,
-                method: 'PUT',
+                method: "PUT",
                 body: user,
             }),
-            invalidatesTags: ['Users']
+            invalidatesTags: ["Users"],
         }),
+
+        // ------------------------------
+        // DELETE USER
+        // ------------------------------
         deleteUsers: builder.mutation<{ success: boolean; userID: number }, number>({
             query: (userID) => ({
                 url: `/api/user/${userID}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: ['Users']
+            invalidatesTags: ["Users"],
         }),
+
+        // ------------------------------
+        // GET USER BY ID
+        // ------------------------------
         getUserById: builder.query<TUser, number>({
             query: (userID) => `/api/user/${userID}`,
             transformResponse: (response: { data: TUser }) => response.data,
-            providesTags: ['Users']
+            providesTags: ["Users"],
         }),
-    })
+    }),
 });
 
 export const {
@@ -85,5 +105,5 @@ export const {
     useGetUsersQuery,
     useUpdateUserMutation,
     useDeleteUsersMutation,
-    useGetUserByIdQuery
+    useGetUserByIdQuery,
 } = userAPI;

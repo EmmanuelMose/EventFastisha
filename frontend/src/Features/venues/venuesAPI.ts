@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ApiDomain } from "../../utils/APIDomain";
 import type { RootState } from "../../app/store";
 
-
 export type TVenue = {
     venueID: number;
     name: string;
@@ -10,55 +9,83 @@ export type TVenue = {
     capacity: number;
     contactNumber: string;
     createdAt: string;
-}
+};
 
 export const venuesAPI = createApi({
-    reducerPath: 'venuesAPI',
+    reducerPath: "venuesAPI",
+
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token; // get the token from the user slice of the state
-            if (token) {
-                headers.set('Authorization', `Bearer ${token}`); // set the Authorization header with the token
-            }
-            headers.set('Content-Type', 'application/json'); // set the Content-Type header to application/json
-            return headers; // return the headers to be used in the request
-        }
+            const token = (getState() as RootState).user.token;
+            if (token) headers.set("Authorization", `Bearer ${token}`);
+            headers.set("Content-Type", "application/json");
+            return headers;
+        },
     }),
 
-    tagTypes: ['Venues'],
+    tagTypes: ["Venues"],
+
     endpoints: (builder) => ({
+        // ------------------------------
+        // CREATE VENUE
+        // ------------------------------
         createVenue: builder.mutation<TVenue, Partial<TVenue>>({
             query: (newVenue) => ({
-                url: '/api/venue',
-                method: 'POST',
-                body: newVenue
+                url: "/api/venue",
+                method: "POST",
+                body: newVenue,
             }),
-            invalidatesTags: ['Venues'] // invalidates the cache for the Venues tag when a new venue is created
+            invalidatesTags: ["Venues"],
         }),
-        getVenues: builder.query<{ data: TVenue[] }, void>({ //void means no parameters are needed to fetch the venues
-            query: () => '/api/venues',
-            providesTags: ['Venues'] // this tells RTK Query that this endpoint provides the Venues tag, so it can be used to invalidate the cache when a new venue is created
+
+        // ------------------------------
+        // GET ALL VENUES
+        // ------------------------------
+        getVenues: builder.query<TVenue[], void>({
+            query: () => "/api/venues",
+            transformResponse: (response: { data: TVenue[] }) => response.data,
+            providesTags: ["Venues"],
         }),
-        updateVenue: builder.mutation<TVenue, Partial<TVenue> & { venueID: number }>({ //& { id: number } is used to ensure that the id is always present when updating a venue
-            query: (updatedVenue) => ({
-                url: `/api/venue/${updatedVenue.venueID}`,
-                method: 'PUT',
-                body: updatedVenue
+
+        // ------------------------------
+        // UPDATE VENUE
+        // ------------------------------
+        updateVenue: builder.mutation<TVenue, Partial<TVenue> & { venueID: number }>({
+            query: (venue) => ({
+                url: `/api/venue/${venue.venueID}`,
+                method: "PUT",
+                body: venue,
             }),
-            invalidatesTags: ['Venues'] // invalidates the cache for the Venues tag when a venue is updated
+            invalidatesTags: ["Venues"],
         }),
-        deleteVenue: builder.mutation<{ success: boolean, venueID: number }, number>({ //success: boolean indicates whether the deletion was successful, id: number is the id of the venue that was deleted, number is the type of the id parameter
+
+        // ------------------------------
+        // DELETE VENUE
+        // ------------------------------
+        deleteVenue: builder.mutation<{ success: boolean; venueID: number }, number>({
             query: (venueID) => ({
                 url: `/api/venue/${venueID}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: ['Venues'] // invalidates the cache for the Venues tag when a venue is deleted
+            invalidatesTags: ["Venues"],
         }),
-        // get venue by id
-        getVenueById: builder.query<{ data: TVenue[] }, number>({
+
+        // ------------------------------
+        // GET VENUE BY ID
+        // ------------------------------
+        getVenueById: builder.query<TVenue, number>({
             query: (venueID) => `/api/venue/${venueID}`,
-            providesTags: ['Venues'] // this tells RTK Query that this endpoint provides the Venues tag, so it can be used to invalidate the cache when a new venue is created
+            transformResponse: (response: { data: TVenue }) => response.data,
+            providesTags: ["Venues"],
         }),
-    })
-})
+    }),
+});
+
+export const {
+    useCreateVenueMutation,
+    useGetVenuesQuery,
+    useUpdateVenueMutation,
+    useDeleteVenueMutation,
+    useGetVenueByIdQuery,
+} = venuesAPI;

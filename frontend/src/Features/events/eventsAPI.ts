@@ -21,61 +21,71 @@ export type TEvent = {
 };
 
 export const eventsAPI = createApi({
-    reducerPath: 'eventsAPI',
+    reducerPath: "eventsAPI",
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            // fix for Vercel TS build
-            const state = getState() as RootState & { user?: { token?: string } };
-            const token = state.user?.token;
-
+            const token = (getState() as RootState).user.token;
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${token}`);
             }
-            headers.set('Content-Type', 'application/json');
+            headers.set("Content-Type", "application/json");
             return headers;
-        }
+        },
     }),
-    tagTypes: ['Events'],
+
+    tagTypes: ["Events"],
+
     endpoints: (builder) => ({
         createEvent: builder.mutation<TEvent, Partial<TEvent>>({
             query: (newEvent) => ({
-                url: '/api/event',
-                method: 'POST',
-                body: newEvent
+                url: "/api/event",
+                method: "POST",
+                body: newEvent,
             }),
-            invalidatesTags: ['Events']
+            invalidatesTags: ["Events"],
         }),
+
         getEvents: builder.query<{ data: TEvent[] }, void>({
-            query: () => '/api/events',
-            providesTags: ['Events']
+            query: () => "/api/events",
+            providesTags: ["Events"],
         }),
-        updateEvent: builder.mutation<TEvent, Partial<TEvent> & { eventID: number }>({
+
+        updateEvent: builder.mutation<
+            TEvent,
+            Partial<TEvent> & { eventID: number }
+        >({
             query: (updatedEvent) => ({
                 url: `/api/event/${updatedEvent.eventID}`,
-                method: 'PUT',
-                body: updatedEvent
+                method: "PUT",
+                body: updatedEvent,
             }),
-            invalidatesTags: ['Events']
+            invalidatesTags: ["Events"],
         }),
-        deleteEvent: builder.mutation<{ success: boolean; eventID: number }, number>({
+
+        deleteEvent: builder.mutation<
+            { success: boolean; eventID: number },
+            number
+        >({
             query: (eventID) => ({
                 url: `/api/event/${eventID}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: ['Events']
+            invalidatesTags: ["Events"],
         }),
+
         getEventById: builder.query<{ data: TEvent[] }, number>({
             query: (eventID) => `/api/event/${eventID}`,
-            providesTags: ['Events']
+            providesTags: ["Events"],
         }),
-    })
+    }),
 });
 
+//  EXPORT HOOKS
 export const {
     useCreateEventMutation,
     useGetEventsQuery,
     useUpdateEventMutation,
     useDeleteEventMutation,
-    useGetEventByIdQuery
+    useGetEventByIdQuery,
 } = eventsAPI;

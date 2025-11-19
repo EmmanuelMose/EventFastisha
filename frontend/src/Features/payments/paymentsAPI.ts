@@ -2,76 +2,96 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ApiDomain } from "../../utils/APIDomain";
 import type { RootState } from "../../app/store";
 
-
 export type TPayment = {
     paymentID: number;
     bookingID: number;
     userID: number;
     amount: number;
-    paymentStatus:string;
+    paymentStatus: string;
     paymentDate: string;
     paymentMethod: string;
     createdAt: string;
     updatedAt: string;
-}
+};
 
 export const paymentsAPI = createApi({
-    reducerPath: 'paymentsAPI',
+    reducerPath: "paymentsAPI",
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            const token = (getState() as RootState).user.token; // get the token from the user slice of the state
+            const token = (getState() as RootState).user.token;
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`); // set the Authorization header with the token
+                headers.set("Authorization", `Bearer ${token}`);
             }
-            headers.set('Content-Type', 'application/json'); // set the Content-Type header to application/json
-            return headers; // return the headers to be used in the request
-        }
+            headers.set("Content-Type", "application/json");
+            return headers;
+        },
     }),
 
-    tagTypes: ['Payments'],
+    tagTypes: ["Payments"],
+
     endpoints: (builder) => ({
         createPayment: builder.mutation<TPayment, Partial<TPayment>>({
             query: (newPayment) => ({
-                url: '/api/payment',
-                method: 'POST',
-                body: newPayment
+                url: "/api/payment",
+                method: "POST",
+                body: newPayment,
             }),
-            invalidatesTags: ['Payments'] // invalidates the cache for the Payment tag when a new payment is created
+            invalidatesTags: ["Payments"],
         }),
-        getPayments: builder.query<{ data: TPayment[] }, void>({ //void means no parameters are needed to fetch the payments
-            query: () => '/api/payments',
-            providesTags: ['Payments'] // this tells RTK Query that this endpoint provides the Payment tag, so it can be used to invalidate the cache when a new payment is created
+
+        getPayments: builder.query<{ data: TPayment[] }, void>({
+            query: () => "/api/payments",
+            providesTags: ["Payments"],
         }),
-        updatePayment: builder.mutation<TPayment, Partial<TPayment> & { paymentID: number }>({ //& { id: number } is used to ensure that the id is always present when updating a payment
+
+        updatePayment: builder.mutation<
+            TPayment,
+            Partial<TPayment> & { paymentID: number }
+        >({
             query: (updatedPayment) => ({
                 url: `/api/payment/${updatedPayment.paymentID}`,
-                method: 'PUT',
-                body: updatedPayment
+                method: "PUT",
+                body: updatedPayment,
             }),
-            invalidatesTags: ['Payments'] // invalidates the cache for the Payment tag when a payment is updated
+            invalidatesTags: ["Payments"],
         }),
-        deletePayment: builder.mutation<{ success: boolean, paymentID: number }, number>({ //success: boolean indicates whether the deletion was successful, id: number is the id of the payment that was deleted, number is the type of the id parameter
+
+        deletePayment: builder.mutation<
+            { success: boolean; paymentID: number },
+            number
+        >({
             query: (paymentID) => ({
                 url: `/api/payment/${paymentID}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: ['Payments'] // invalidates the cache for the Payment tag when a payment is deleted
+            invalidatesTags: ["Payments"],
         }),
-        // get payment by id
+
         getPaymentById: builder.query<{ data: TPayment[] }, number>({
             query: (paymentID) => `/api/payment/${paymentID}`,
-            providesTags: ['Payments'] // this tells RTK Query that this endpoint provides the Payment tag, so it can be used to invalidate the cache when a new payment is created
+            providesTags: ["Payments"],
         }),
-        // get payment by User ID
+
         getPaymentByUserId: builder.query<{ data: TPayment[] }, number>({
-        query: (userId) => `/api/payments/user/${userId}`,
-        providesTags: ['Payments'],
-    }),
-        // get payment by Booking ID
+            query: (userId) => `/api/payments/user/${userId}`,
+            providesTags: ["Payments"],
+        }),
+
         getPaymentByBookingId: builder.query<{ data: TPayment[] }, number>({
-        query: (bookingID) => `/api/payments/booking/${bookingID}`,
-        providesTags: ['Payments'],
+            query: (bookingID) => `/api/payments/booking/${bookingID}`,
+            providesTags: ["Payments"],
+        }),
     }),
-    })
-})
+});
+
+// EXPORT HOOKS
+export const {
+    useCreatePaymentMutation,
+    useGetPaymentsQuery,
+    useUpdatePaymentMutation,
+    useDeletePaymentMutation,
+    useGetPaymentByIdQuery,
+    useGetPaymentByUserIdQuery,
+    useGetPaymentByBookingIdQuery,
+} = paymentsAPI;

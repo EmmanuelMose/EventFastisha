@@ -14,66 +14,86 @@ export type TCustomerSupport = {
 };
 
 export const customerSupportAPI = createApi({
-    reducerPath: 'customerSupportAPI',
+    reducerPath: "customerSupportAPI",
     baseQuery: fetchBaseQuery({
         baseUrl: ApiDomain,
         prepareHeaders: (headers, { getState }) => {
-            // Fix TS error on Vercel
-            const state = getState() as RootState & { user?: { token?: string } };
-            const token = state.user?.token;
-
+            const token = (getState() as RootState).user?.token;
             if (token) {
-                headers.set('Authorization', `Bearer ${token}`);
+                headers.set("Authorization", `Bearer ${token}`);
             }
-            headers.set('Content-Type', 'application/json');
+            headers.set("Content-Type", "application/json");
             return headers;
-        }
+        },
     }),
-    tagTypes: ['CustomerSupport'],
+
+    tagTypes: ["CustomerSupport"],
+
     endpoints: (builder) => ({
+        // CREATE SUPPORT TICKET
         createSupportTicket: builder.mutation<TCustomerSupport, Partial<TCustomerSupport>>({
-            query: (newSupportTicket) => ({
-                url: '/api/ticket',
-                method: 'POST',
-                body: newSupportTicket
+            query: (newTicket) => ({
+                url: "/api/ticket",
+                method: "POST",
+                body: newTicket,
             }),
-            invalidatesTags: ['CustomerSupport']
+            invalidatesTags: ["CustomerSupport"],
         }),
+
+        // GET ALL SUPPORT TICKETS
         getSupportTickets: builder.query<{ data: TCustomerSupport[] }, void>({
-            query: () => '/api/tickets',
-            providesTags: ['CustomerSupport']
+            query: () => "/api/tickets",
+            providesTags: ["CustomerSupport"],
         }),
-        updateSupportTicket: builder.mutation<TCustomerSupport, Partial<TCustomerSupport> & { ticketID: number }>({
-            query: (updatedSupportTicket) => ({
-                url: `/api/ticket/${updatedSupportTicket.ticketID}`,
-                method: 'PUT',
-                body: updatedSupportTicket
+
+        // UPDATE SUPPORT TICKET STATUS OR CONTENT
+        updateSupportTicket: builder.mutation<
+            TCustomerSupport,
+            Partial<TCustomerSupport> & { ticketID: number }
+        >({
+            query: (updatedTicket) => ({
+                url: `/api/ticket/${updatedTicket.ticketID}`,
+                method: "PUT",
+                body: updatedTicket,
             }),
-            invalidatesTags: ['CustomerSupport']
+            invalidatesTags: ["CustomerSupport"],
         }),
-        deleteSupportTicket: builder.mutation<{ success: boolean; ticketID: number }, number>({
+
+        // DELETE SUPPORT TICKET
+        deleteSupportTicket: builder.mutation<
+            { success: boolean; ticketID: number },
+            number
+        >({
             query: (ticketID) => ({
                 url: `/api/ticket/${ticketID}`,
-                method: 'DELETE'
+                method: "DELETE",
             }),
-            invalidatesTags: ['CustomerSupport']
+            invalidatesTags: ["CustomerSupport"],
         }),
+
+        // GET TICKET BY ID
         getSupportTicketById: builder.query<{ data: TCustomerSupport[] }, number>({
             query: (ticketID) => `/api/ticket/${ticketID}`,
-            providesTags: ['CustomerSupport']
+            providesTags: ["CustomerSupport"],
         }),
-        getSupportTicketsByUserId: builder.query<{ data: TCustomerSupport[] }, number>({
+
+        // GET TICKETS BY USER ID
+        getSupportTicketsByUserId: builder.query<
+            { data: TCustomerSupport[] },
+            number
+        >({
             query: (userId) => `/api/tickets/user/${userId}`,
-            providesTags: ['CustomerSupport']
+            providesTags: ["CustomerSupport"],
         }),
-    })
+    }),
 });
 
+// 👇 EXPORT HOOKS
 export const {
     useCreateSupportTicketMutation,
     useGetSupportTicketsQuery,
     useUpdateSupportTicketMutation,
     useDeleteSupportTicketMutation,
     useGetSupportTicketByIdQuery,
-    useGetSupportTicketsByUserIdQuery
+    useGetSupportTicketsByUserIdQuery,
 } = customerSupportAPI;
