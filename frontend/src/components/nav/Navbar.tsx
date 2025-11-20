@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import logo from "../../assets/images/logo.png"
 import { NavLink, useNavigate } from 'react-router';
 import type { RootState } from "../../app/store";
-import { logout } from "../../Features/login/userSlicer";
+import { logout } from "../../Features/login/userSlice";
 
 const Navbar = () => {
     const userrole = useSelector((state: RootState) => state.user.user?.role);
