@@ -2,11 +2,11 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import storage from "redux-persist/lib/storage";
 
-import { userAPI } from "../../src/Features/users/usersAPI";
+import { userAPI } from "../../../frontend/src/Features/users/usersAPI";
 import { loginAPI } from "../Features/login/loginAPI";
 import userSlice from "../Features/login/userSlice";
 import { bookingsAPI } from "../Features/booking/bookingAPI";
-import { customerSupportAPI } from "../../src/Features/customerSupport/customerSupportAPI";
+import { customerSupportAPI } from "../../../frontend/src/Features/customerSupport/customerSupportAPI";
 import { paymentsAPI } from "../Features/payments/paymentsAPI";
 import { eventsAPI } from "../Features/events/eventsAPI";
 import { venuesAPI } from "../Features/venues/venuesAPI";
