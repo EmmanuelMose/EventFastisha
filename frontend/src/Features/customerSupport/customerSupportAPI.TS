@@ -24,7 +24,7 @@ export const customerSupportAPI = createApi({
                 headers.set('Authorization', `Bearer ${token}`); // set the Authorization header with the token
             }
             headers.set('Content-Type', 'application/json'); // set the Content-Type header to application/json
-            return headers; // return the headers to be used in the request
+            return headers; 
         }
     }),
 
