@@ -1,7 +1,7 @@
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { customerSupportAPI, type TCustomerSupport } from "../../../../Features/customerSupport/customerSupportAPI";
+import { customerSupportAPI, type TCustomerSupport } from "../../../../../src/Features/customerSupport/customerSupportAPI";
 import { toast } from "sonner";
 import { useEffect } from "react";
 

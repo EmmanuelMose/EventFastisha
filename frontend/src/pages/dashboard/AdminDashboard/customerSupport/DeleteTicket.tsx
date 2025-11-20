@@ -1,5 +1,5 @@
 import { toast } from "sonner";
-import { customerSupportAPI, type TCustomerSupport } from "../../../../Features/customerSupport/customerSupportAPI";
+import { customerSupportAPI, type TCustomerSupport } from "../../../../../src/Features/customerSupport/customerSupportAPI";
 
 type DeleteTicketProps = {
     ticket: TCustomerSupport | null;

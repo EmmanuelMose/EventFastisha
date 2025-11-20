@@ -1,6 +1,6 @@
 import { type RootState } from "../../../../app/store";
 import { useDispatch, useSelector } from "react-redux";
-import { userAPI } from "../../../../Features/users/usersAPI";
+import { userAPI } from "../../../../../src/Features/users/usersAPI";
 import { useNavigate } from "react-router";
 import { logout } from "../../../../Features/login/userSlice";
 import UpdateProfile from "./UpdateProfile";

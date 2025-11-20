@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { customerSupportAPI } from "../../Features/customerSupport/customerSupportAPI";
+import { customerSupportAPI } from "../../../src/Features/customerSupport/customerSupportAPI";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../app/store";

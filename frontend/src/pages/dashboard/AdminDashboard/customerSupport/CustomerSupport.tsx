@@ -1,4 +1,4 @@
-import { customerSupportAPI, type TCustomerSupport } from "../../../../Features/customerSupport/customerSupportAPI";
+import { customerSupportAPI, type TCustomerSupport } from "../../../../../src/Features/customerSupport/customerSupportAPI";
 import { FaEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { useState } from "react";
