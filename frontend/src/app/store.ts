@@ -17,7 +17,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["user"], // only persist user slice
+  whitelist: ["user"], 
 };
 
 
