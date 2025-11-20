@@ -36,9 +36,7 @@ const rootReducer = combineReducers({
 // Persist the root reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// -----------------------------
-// STORE CONFIG
-// -----------------------------
+
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -58,7 +56,5 @@ export const store = configureStore({
 // Persistor
 export const persistedStore = persistStore(store);
 
-// -----------------------------
-// CORRECT RootState TYPE
-// -----------------------------
+
 export type RootState = ReturnType<typeof rootReducer>;
