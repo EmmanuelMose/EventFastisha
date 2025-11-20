@@ -12,9 +12,7 @@ import { eventsAPI } from "../Features/events/eventsAPI";
 import { venuesAPI } from "../Features/venues/venuesAPI";
 import { mpesaAPI } from "../Features/mpesa/mpesaAPI";
 
-// -----------------------------
-// PERSIST CONFIG
-// -----------------------------
+
 const persistConfig = {
   key: "root",
   version: 1,
@@ -22,9 +20,7 @@ const persistConfig = {
   whitelist: ["user"], // only persist user slice
 };
 
-// -----------------------------
-// ROOT REDUCER
-// -----------------------------
+
 const rootReducer = combineReducers({
   [userAPI.reducerPath]: userAPI.reducer,
   [loginAPI.reducerPath]: loginAPI.reducer,
