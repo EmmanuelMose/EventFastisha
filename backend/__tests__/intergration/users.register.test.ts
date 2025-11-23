@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 jest.mock("../../src/mailer/mailer", () => ({
   sendEmail: jest.fn(),
 }));
@@ -28,9 +27,7 @@ afterAll(async () => {
 });
 
 describe("Registering a new user", () => {
-  // ----------------------------
-  // CREATE USER
-  // ----------------------------
+ 
   it("should register a new user successfully", async () => {
     const res = await request(app).post("/api/user").send(testUser);
 
