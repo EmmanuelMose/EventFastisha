@@ -34,9 +34,7 @@ describe("User API Integration Tests", () => {
   createdUserId = user?.userID!;
 });
  
-  // ----------------------------
-  // READ - Get All Users
-  // ----------------------------
+ 
   describe("GET /api/users", () => {
     it("should return all users", async () => {
       const res = await request(app).get("/api/users");
@@ -59,9 +57,7 @@ describe("User API Integration Tests", () => {
     });
   });
 
-  // ----------------------------
-  // READ - Get User by ID
-  // ----------------------------
+ 
   describe("GET /api/user/:id", () => {
     it("should return a user by ID", async () => {
       const res = await request(app).get(`/api/user/${createdUserId}`);
@@ -98,9 +94,7 @@ describe("User API Integration Tests", () => {
     });
   });
 
-  // ----------------------------
-  // UPDATE
-  // ----------------------------
+ 
   describe("PUT /api/user/:id", () => {
     it("should update an existing user", async () => {
       const updated = {
@@ -142,9 +136,7 @@ describe("User API Integration Tests", () => {
     });
   });
 
-  // ----------------------------
-  // DELETE
-  // ----------------------------
+ 
   describe("DELETE /api/user/:id", () => {
     it("should delete a user", async () => {
       const res = await request(app).delete(`/api/user/${createdUserId}`);
