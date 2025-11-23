@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-const BASE_URL = 'http://localhost:8081'; // Update if your API runs on a different port
+const BASE_URL = 'https://eventfastisha.onrender.com'; // Update if your API runs on a different port
 
 export const options = {
     stages: [
