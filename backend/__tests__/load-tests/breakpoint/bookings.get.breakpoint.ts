@@ -1,7 +1,7 @@
 import http from 'k6/http';
 import { check, sleep } from 'k6';
 
-const BASE_URL = 'http://localhost:8081'; 
+const BASE_URL = 'https://eventfastisha.onrender.com'; 
 
 export const options = {
     stages: [
